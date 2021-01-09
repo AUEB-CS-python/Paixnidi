@@ -19,4 +19,7 @@ def vathmoi(cards)
             #anoigeis kai 3h karta
             #an tautizontai pairnei p==10
             p=10
+        elif cards[0] == ['Q']:
+            p=10
+            sum += p
     return sum
