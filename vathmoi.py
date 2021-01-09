@@ -4,7 +4,7 @@ def vathmoi(cards)
         p=1
         sum+=p
     elif cards[0] in [str(i) for i in range(2, 11)]:
-        p=int(card)
+        p=int(cards[0])
         sum+=p
     elif cards[0] in ['J', 'Q', 'K'] :
         if cards[0]==['J'] :
