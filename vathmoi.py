@@ -1,4 +1,4 @@
-def vathmoi()
+def vathmoi(cards)
     sum=0
     if cards[0]=='A' :
         p=1
