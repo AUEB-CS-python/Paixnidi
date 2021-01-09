@@ -15,7 +15,7 @@ def vathmoi()
             p=10
             sum+=p
             #xanei seira o epomenos
-        elif cards == ['K'] + ['Q'] :
+        elif cards[0] == ['K'] + ['Q'] :
             #anoigeis kai 3h karta
             #an tautizontai pairnei p==10
             p=10
