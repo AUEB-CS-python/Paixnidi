@@ -3,15 +3,15 @@ def vathmoi()
     if cards[0]=='A' :
         p=1
         sum+=p
-    elif cards in [str(i) for i in range(2, 11)]:
+    elif cards[0] in [str(i) for i in range(2, 11)]:
         p=int(card)
         sum+=p
     elif cards[0] in ['J', 'Q', 'K'] :
-        if cards==['J'] :
+        if cards[0]==['J'] :
             p=10
             sum+=p
             #play again
-        elif cards==['K']:
+        elif cards[0]==['K']:
             p=10
             sum+=p
             #xanei seira o epomenos
