@@ -1,6 +1,6 @@
-def vathmoi(cards1, cards2)
+def vathmoi(cards1, cards2) :
     sum=0
-    cards1[0]=cards2[0]
+    if cards1[0]==cards2[0] :
         if cards1[0]=='A' :
             p=1
             sum+=p
