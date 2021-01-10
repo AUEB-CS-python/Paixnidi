@@ -52,6 +52,3 @@ def get_arrays(difficulty):
     starting = create_final(['X']*(4*dif), dif)
     #print_board(starting, dif, False)
     return [starting, final]
-
-#n = int(input("Δώστε επίπεδο δυσκολίας Εύκολο (1), Μέτριο (2), Δύσκολο (3): "))
-#get_arrays(n)
