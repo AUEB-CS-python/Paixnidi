@@ -53,28 +53,26 @@ Sum = []
 for i in range(player_num):
     Sum.append(0)
 
-def card_check(card_num, columns, name, whosplaying,starting, final, cards, is3rd):
-    while card_num<2 or is3rd==False:
-        row, column = pick_cards(card_num, columns, name, whosplaying - 1)
+def card_check(card_num, columns, name, whoisplaying,starting, final, cards, is3rd):
+    while card_num<2 or (is3rd==False and card_num==2):
+        row, column = pick_cards(card_num, columns, name, whoisplaying - 1)
         card = final[row - 1][column - 1][0] + final[row - 1][column - 1][1]
         if card == starting[row - 1][column - 1]:
             print('Η κάρτα αυτή είναι ήδη ανοιχτή.')
-            row, column = pick_cards(columns, card_num, name, whosplaying - 1)
+            row, column = pick_cards(columns, card_num, name, whoisplaying - 1)
         else:
             cards.append(card)
+            card_num += 1
             starting[row - 1][column - 1] = cards[card_num - 1]
             print_board(starting, difficulty)
-            card_num += 1
-    print('mlkia1')
     return cards,row,column
 
-while True:
-    whosplaying=1
+while starting!=final: #kai an ta fulla poy apomenoun den mporoun na guristoun
+    whoisplaying=1
     cards=[]
     card_num = 0
     is3rd = False
-    cards,row,column = card_check(card_num, columns, name, whosplaying,starting, final, cards, is3rd)
-    print('mlkia2')
-    if card_num == 2:
-        vathmoi(cards,Sum,whosplaying-1,name)
-    print('mlkia3')
+    cards,row,column = card_check(card_num, columns, name, whoisplaying,starting, final, cards, is3rd)
+    Sum,whoisplaying = vathmoi(cards,Sum,whoisplaying-1,name,whoisplaying)
+    if whoisplaying>player_num:
+        whoisplaying=whoisplaying-player_num

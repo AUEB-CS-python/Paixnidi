@@ -11,7 +11,6 @@ def set_player_num():
         except:
             print('Δώσε ακέραιο αριθμό')
             pass
-
     return player_num
 
 
@@ -34,8 +33,7 @@ def pick_cards(card_num, columns, name, whoisplaying):
                 column = int(column)
                 return row, column
 
-
-def vathmoi(cards, sum, i, name):
+def vathmoi(cards, sum, i, name,whoisplaying):
     if cards[0][0] == cards[1][0]:
         if cards[0][0] == 'A':
             p = 1
@@ -54,14 +52,14 @@ def vathmoi(cards, sum, i, name):
                 print(
                     'Μπράβο ' + name[i] + '!!! Kερδίζεις ' + str(p) + ' πόντους. Οι συνολικοί σου πόντοι είναι ' + sum[
                         i] + '.')
-                # play again
+                whoisplaying-=1
             elif cards[0][0] == ['K']:
                 p = 10
                 sum[i] += p
                 print(
                     'Μπράβο ' + name[i] + '!!! Kερδίζεις ' + str(p) + ' πόντους. Οι συνολικοί σου πόντοι είναι ' + sum[
                         i] + '.')
-                # xanei seira o epomenos
+                whoisplaying+=1
             elif cards[0][0] == ['Q']:
                 p = 10
                 sum[i] += p
@@ -71,18 +69,6 @@ def vathmoi(cards, sum, i, name):
     elif cards[0][0] == ['K'] and cards[1][0] == ['Q'] or cards[0][0] == ['Q'] and cards[1][0] == ['K']:
         is3rd=True
         cards, row, column = card_check(starting, final, cards, card_num, is3rd)
-        """"
-        row, column = pick_cards(columns, card_num + 1, name)
-        card = final[row - 1][column - 1][0] + final[row - 1][column - 1][1]
-        if card == starting[row - 1][column - 1]:
-            print('Η κάρτα αυτή είναι ήδη ανοιχτή.')
-            card = pick_cards(columns, card_num, final)
-        else:
-            cards.append(card)
-            starting[row - 1][column - 1] = cards[card_num - 1]
-            print_board(starting, difficulty)
-            """
     else:
         print('Οι κάρτες δεν ταιριάζουν. Δεν κερδίζεις πόντους. ')
-
-    return sum
+    return sum,whoisplaying
