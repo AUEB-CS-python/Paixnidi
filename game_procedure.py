@@ -1,31 +1,26 @@
 def set_player_num():
-    player_num = input('Δώστε αριθμό παικτών. ')
     while True:
-        l = len(player_num)
-        for i in range(l):
-            if player_num[i] not in (str(j) for j in range(10)):
-                valid = False
-                break
-            else:
-                valid = True
-        if player_num == '0':
-            print('Πρέπει να συμμετέχει τουλάχιστον ένας παίκτης. Ξαναδοκιμάστε. ')  # για num=1 θα το κανουμε μετα
-            player_num = input()
-        elif valid == False:
-            print('Ουπς! Κάτι πήγε στραβά. Παρακαλώ ξαναδοκιμάστε.')
-            player_num = input()
-        else:
+        try:
+            player_num = input('Δώστε αριθμό παικτών: ')
             player_num = int(player_num)
-            break
+            if player_num == 0:
+                print('Πρέπει να συμμετέχει τουλάχιστον ένας παίκτης. Ξαναδοκιμάστε. ')
+                pass
+            else:
+                break
+        except:
+            print('Δώσε ακέραιο αριθμό')
+            pass
+
     return player_num
 
 
-def pick_cards(card_num, columns, name, whosplaying):
+def pick_cards(card_num, columns, name, whoisplaying):
     valid = False
     while not valid:
         try:
             row, column = input(
-                name[whosplaying] + ' δώσε γραμμή και στήλη ' + str(card_num+1) + 'ης κάρτας (πχ 2,3): ').split(',')
+                name[whoisplaying] + ' δώσε γραμμή και στήλη ' + str(card_num+1) + 'ης κάρτας (πχ 2,3): ').split(',')
         except:
             print('Προέκυψε σφάλμα.  Παρακαλώ ξαναδοκίμασε. ')
         else:
@@ -38,6 +33,7 @@ def pick_cards(card_num, columns, name, whosplaying):
                 row = int(row)
                 column = int(column)
                 return row, column
+
 
 def vathmoi(cards, sum, i, name):
     if cards[0][0] == cards[1][0]:
