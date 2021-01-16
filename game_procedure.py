@@ -1,3 +1,5 @@
+from main import card_check
+from gen_list import print_board
 def set_player_num():
     while True:
         try:
@@ -39,57 +41,70 @@ def print_win_msg(name, whoisplaying, sum, p):
           f'Οι συνολικοί σου πόντοι είναι {sum[whoisplaying-1]}.')
 
 
-def vathmoi(cards, sum, name, whoisplaying, starting_dict, row, column):
-    if cards[0][0] == cards[1][0]:
-        if cards[0][0] == 'A':
+def vathmoi(cards, sum, name, whoisplaying, starting_dict, row, column, total_cols, final_dict, difficulty):
+    next = cards[1][0]
+    current = cards[0][0]
+    if current == next:
+        if current == 'A':
             p = 1
             sum[whoisplaying-1] += p
             print_win_msg(name, whoisplaying, sum, p)
-        elif cards[0][0] in [str(i) for i in range(2, 11)]:
-            p = int(cards[0][0])
+        elif current in [str(i) for i in range(2, 11)]:
+            p = int(current)
             sum[whoisplaying-1] += p
             print_win_msg(name, whoisplaying, sum, p)
-        elif cards[0][0] in ['J', 'Q', 'K']:
-            if cards[0][0] == 'J':
+        elif current in ['J', 'Q', 'K']:
+            if current == 'J':
                 p = 10
                 sum[whoisplaying-1] += p
                 print_win_msg(name, whoisplaying, sum, p)
                 whoisplaying -= 1
                 print('Ξαναπαίζεις! ')
-            elif cards[0][0] == 'K':
+            elif current == 'K':
                 p = 10
                 sum[whoisplaying-1] += p
                 print_win_msg(name, whoisplaying, sum, p)
                 whoisplaying += 1
                 print('Ο επόμενος παίκτης χάνει την σειρά του! ')
-            elif cards[0][0] == 'Q':
+            elif current == 'Q':
                 p = 10
                 sum[whoisplaying-1] += p
                 print_win_msg(name, whoisplaying, sum, p)
-
-    # elif cards[0][0] == ['K'] and cards[1][0] == ['Q'] or cards[0][0] == ['Q'] and cards[1][0] == ['K']:
-    #     is3rd=True
-    #     cards, row, column = card_check(card_num, columns, name, whoisplaying,starting, final, cards, is3rd)
-    #     if cards[2][0]=='Q':
-    #         p=10
-    #         sum[whoisplaying-1]+=p
-    #         print('Μπράβο ' + name[i] + '!!! Kερδίζεις ' + str(p) + ' πόντους. Οι συνολικοί σου πόντοι είναι ' + sum[whoisplaying-1] + '.')
-    #         if cards[0][0]=='Q':
-    #             starting[row[1]-1][column[1]-1]='X'
-    #         else:
-    #             starting[row[0] - 1][column[0] - 1] = 'X'
-    #     elif cards[2][0]=='K':
-    #         p = 10
-    #         sum[whoisplaying - 1] += p
-    #         print('Μπράβο ' + name[i] + '!!! Kερδίζεις ' + str(p) + ' πόντους. Οι συνολικοί σου πόντοι είναι ' + sum[whoisplaying-1] + '.')
-    #         if cards[0][0] == 'K':
-    #             starting[row[1] - 1][column[1] - 1] = 'X'
-    #         else:
-    #             starting[row[0] - 1][column[0] - 1] = 'X'
-    #     else:
-    #         print('Οι κάρτες δεν ταιριάζουν. Δεν κερδίζεις πόντους. ')
-    #         for i in range(3):
-    #            starting[row[i] - 1][column[i] - 1] = 'X'
+    elif current == 'K' and next == 'Q' or current == 'Q' and next == 'K':
+        valid = False
+        while not valid:
+            r, c = pick_cards(2, total_cols, name, whoisplaying-1)
+            r -= 1
+            c -= 1
+            card = final_dict[(r, c)]
+            if card == starting_dict[(r, c)]:
+                print('Η κάρτα αυτή είναι ήδη ανοιχτή.')
+            else:
+                valid = True
+                # an einai kai ta duo K tote xanei th seira o epomenos?
+                starting_dict[(r, c)] = card
+                p = 0
+                print_board(starting_dict, difficulty)
+                if card[0][0] == 'K':
+                    p = 10
+                    if current == 'K':
+                        starting_dict[(row[1], column[1])] = ['X', ' ']
+                    else:
+                        starting_dict[(row[0], column[0])] = ['X', ' ']
+                elif card[0][0] == 'Q':
+                    p = 10
+                    if current == 'Q':
+                        starting_dict[(row[1], column[1])] = ['X', ' ']
+                    else:
+                        starting_dict[(row[0], column[0])] = ['X', ' ']
+                else:
+                    for i in range(2):
+                        starting_dict[(row[i], column[i])] = ['X', ' ']
+                    starting_dict[(r, c)] = ['X', ' ']
+                    print('Οι κάρτες δεν ταιριάζουν. Δεν κερδίζεις πόντους. ')
+                if p > 0:
+                    sum[whoisplaying-1] += p
+                    print_win_msg(name, whoisplaying, sum, p)
     else:
         print('Οι κάρτες δεν ταιριάζουν. Δεν κερδίζεις πόντους. ')
 

@@ -2,12 +2,11 @@ from gen_list import *
 from game_procedure import *
 
 
-# Make board a dictionary like this: {(2,3): ['A', 'heart']}
 def card_check(card_num, name, column, whoisplaying, starting_dict, final_dict, is3rd, difficulty):
     cards = []
     row = []
     col = []
-    while card_num < 2 or (is3rd is True and card_num == 2):
+    while card_num < 2:
         r, c = pick_cards(card_num, column, name, whoisplaying - 1)
         r -= 1
         c -= 1
@@ -63,7 +62,7 @@ def main():
     starting_dict, final_dict = get_arrays(difficulty)
     from time import sleep
 
-    print('Γίνεται ανακάτεμα των καρτών', end='');
+    print('Γίνεται ανακάτεμα των καρτών', end='')
     sleep(0.75)  # ένα μικρό εφέ
     text = '...'
     for i in range(3):
@@ -85,9 +84,12 @@ def main():
         # αν ειναι True τοτε θα υπάρξει τρίτη καρτα
         is3rd = False
         cards, row, column = card_check(card_num, name, columns, whoisplaying, starting_dict, final_dict, is3rd, difficulty)
-        Sum, whoisplaying, starting_dict = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column)
+        Sum, whoisplaying, starting_dict = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty)
         whoisplaying += 1
         whoisplaying = whoisplaying % player_num
+
+    max_idx = Sum.index(max(Sum))
+    print(f'Νικητής είναι ο {name[max_idx]} με {Sum[max_idx]} πόντους!')
 
 
 if __name__ == '__main__':
