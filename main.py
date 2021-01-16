@@ -54,25 +54,34 @@ for i in range(player_num):
     Sum.append(0)
 
 def card_check(card_num, columns, name, whoisplaying,starting, final, cards, is3rd):
-    while card_num<2 or (is3rd==False and card_num==2):
-        row, column = pick_cards(card_num, columns, name, whoisplaying - 1)
-        card = final[row - 1][column - 1][0] + final[row - 1][column - 1][1]
-        if card == starting[row - 1][column - 1]:
+    while card_num<2 or (is3rd==True and card_num==2):
+        r, c = pick_cards(card_num, columns, name, whoisplaying - 1)
+        row.insert(card_num+1,r)
+        column.insert(card_num+1,c)
+        card = final[row[card_num] - 1][column[card_num] - 1][0] + final[row[card_num] - 1][column[card_num] - 1][1]
+        if card == starting[row[card_num] - 1][column[card_num] - 1]:
             print('Η κάρτα αυτή είναι ήδη ανοιχτή.')
-            row, column = pick_cards(columns, card_num, name, whoisplaying - 1)
         else:
             cards.append(card)
             card_num += 1
-            starting[row - 1][column - 1] = cards[card_num - 1]
+            starting[row[card_num-1] - 1][column[card_num-1] - 1] = cards[card_num - 1]
             print_board(starting, difficulty)
     return cards,row,column
 
-while starting!=final: #kai an ta fulla poy apomenoun den mporoun na guristoun
+#kai an ta fulla poy apomenoun den mporoun na guristoun
+while starting!=final:
+    # αποθηκευονται οι γραμμες και οι στηλες των φυλλων που επελεξε ο παικτης
+    row, column = [], []
+    # δειχνει ποιος παικτης παιζει
     whoisplaying=1
+    # αποθηκευονται τα φυλλα που επελεξε ο παικτης
     cards=[]
+    # ο αριθμος καρτών που έχει ανοίξει ο παίκτης
     card_num = 0
+    #αν ειναι True τοτε θα υπάρξει τρίτη καρτα
     is3rd = False
     cards,row,column = card_check(card_num, columns, name, whoisplaying,starting, final, cards, is3rd)
-    Sum,whoisplaying = vathmoi(cards,Sum,whoisplaying-1,name,whoisplaying)
+    Sum,whoisplaying,starting = vathmoi(cards,Sum,name,whoisplaying,starting,row,column)
+    print_board(starting,difficulty)
     if whoisplaying>player_num:
         whoisplaying=whoisplaying-player_num
