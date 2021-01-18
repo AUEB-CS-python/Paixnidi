@@ -1,8 +1,9 @@
 from gen_list import *
 from game_procedure import *
+from computer import play_turn
+import time
 
-
-def card_check(card_num, name, column, whoisplaying, starting_dict, final_dict, is3rd, difficulty):
+def card_check(card_num, name, column, whoisplaying, starting_dict, final_dict, difficulty):
     cards = []
     row = []
     col = []
@@ -25,7 +26,7 @@ def card_check(card_num, name, column, whoisplaying, starting_dict, final_dict, 
 
 def main():
     print('Καλώς ορίσατε στο παιχνίδι "Κάρτες αλά Πληροφορική 101" !!!,\n')
-    print('Με λένε Πύθωνα και θα είμαι ο βοηθός σας. Ας ξεκινήσουμε!\n')
+    print('Με λένε Μπάμπη και θα είμαι ο βοηθός σας. Ας ξεκινήσουμε!\n')
 
     difficulty = input("Δώστε επίπεδο δυσκολίας: Εύκολο (1), Μέτριο (2), Δύσκολο (3): ")
     while True:
@@ -66,30 +67,54 @@ def main():
     sleep(0.75)  # ένα μικρό εφέ
     text = '...'
     for i in range(3):
-        print(text[i], end='');
+        print(text[i], end='')
         sleep(0.75)
         if i == 2:
             print('\n')
 
-    Sum = [0] * player_num
+    if player_num > 1:
+        Sum = [0] * player_num
 
-    whoisplaying = 1
-    while starting_dict != final_dict:
-        print_board(starting_dict, difficulty)
-        # δειχνει ποιος παικτης παιζει
-        # αποθηκευονται τα φυλλα που επελεξε ο παικτης
-        # cards = []
-        # ο αριθμος καρτών που έχει ανοίξει ο παίκτης
-        card_num = 0
-        # αν ειναι True τοτε θα υπάρξει τρίτη καρτα
-        is3rd = False
-        cards, row, column = card_check(card_num, name, columns, whoisplaying, starting_dict, final_dict, is3rd, difficulty)
-        Sum, whoisplaying, starting_dict = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty)
-        whoisplaying += 1
-        whoisplaying = whoisplaying % player_num
+        whoisplaying = 1
+        cards_left = columns*4
+        while starting_dict != final_dict:
+            print_board(starting_dict, difficulty)
+            cards, row, column = card_check(0, name, columns, whoisplaying, starting_dict, final_dict, difficulty)
+            Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, False, [])
+            whoisplaying += 1
+            whoisplaying = whoisplaying % player_num
 
-    max_idx = Sum.index(max(Sum))
-    print(f'Νικητής είναι ο {name[max_idx]} με {Sum[max_idx]} πόντους!')
+        max_idx = Sum.index(max(Sum))
+        print(f'Νικητής είναι ο {name[max_idx]} με {Sum[max_idx]} πόντους!')
+    else:
+        print("Διάλεξες να παίξεις με τον υπολογιστή")
+        name.append('Υπολογιστής')
+        player_num += 1
+
+        whoisplaying = 1
+        Sum = [0, 0]
+        cards_left = 4*columns
+
+        while starting_dict != final_dict:
+            print_board(starting_dict, difficulty)
+            if whoisplaying == 1:
+                cards, row, column = card_check(0, name, columns, whoisplaying, starting_dict, final_dict, difficulty)
+                Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict,
+                                                                       row, column, columns, final_dict, difficulty,
+                                                                       cards_left, False, [])
+            else:
+                coords, starting_dict, history_coords = play_turn(starting_dict, final_dict, columns)
+                cards = [final_dict[coords[0]], final_dict[coords[1]]]
+                row = [coords[0][0], coords[1][0]]
+                column = [coords[0][1], coords[1][1]]
+                print('Ο πίνακας με τις κάρτες που διάλεξε ο υπολογιστής:')
+                print_board(starting_dict, difficulty)
+                time.sleep(1)
+                Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, True, history_coords)
+            whoisplaying += 1
+            whoisplaying = whoisplaying % player_num
+        max_idx = Sum.index(max(Sum))
+        print(f'Νικητής είναι ο {name[max_idx]} με {Sum[max_idx]} πόντους!')
 
 
 if __name__ == '__main__':
