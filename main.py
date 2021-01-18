@@ -1,7 +1,9 @@
+
 from gen_list import *
 from game_procedure import *
 from computer import play_turn
 import time
+
 
 def card_check(card_num, name, column, whoisplaying, starting_dict, final_dict, difficulty):
     cards = []
@@ -59,8 +61,10 @@ def main():
                 print('Παίκτη ' + str(i + 1) + ' διάλεξε κάποιο διαφορετικό όνομα. ')
                 x = input()
     name.sort()
-
-    bonus1 = activate_bonus1()
+    if player_num!=1:
+        bonus1 = activate_bonus1()
+    else:
+        bonus1=False
 
     starting_dict, final_dict = get_arrays(difficulty)
     from time import sleep
@@ -78,18 +82,21 @@ def main():
         Sum = [0] * player_num
 
         whoisplaying = 1
+        first_turn=True
         cards_left = columns*4
         while starting_dict != final_dict:
             print_board(starting_dict, difficulty)
             cards, row, column = card_check(0, name, columns, whoisplaying, starting_dict, final_dict, difficulty)
-            Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, final_dict, difficulty, cards_left, False, [],bonus1)
+            Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, False, [], bonus1,first_turn)
             whoisplaying += 1
-            whoisplaying = whoisplaying % player_num
+            if whoisplaying>player_num:
+                whoisplaying=whoisplaying-player_num
+                first_turn=False
 
         max_idx = Sum.index(max(Sum))
         print(f'Νικητής είναι ο {name[max_idx]} με {Sum[max_idx]} πόντους!')
     else:
-        print("Διάλεξες να παίξεις με τον υπολογιστή.")
+        print("Διάλεξες να παίξεις με τον υπολογιστή")
         name.append('Υπολογιστής')
         player_num += 1
 
@@ -103,7 +110,7 @@ def main():
                 cards, row, column = card_check(0, name, columns, whoisplaying, starting_dict, final_dict, difficulty)
                 Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict,
                                                                        row, column, columns, final_dict, difficulty,
-                                                                       cards_left, False, [],bonus1)
+                                                                       cards_left, False, [], bonus1,first_turn)
             else:
                 coords, starting_dict, history_coords = play_turn(starting_dict, final_dict, columns)
                 cards = [final_dict[coords[0]], final_dict[coords[1]]]
@@ -112,7 +119,7 @@ def main():
                 print('Ο πίνακας με τις κάρτες που διάλεξε ο υπολογιστής:')
                 print_board(starting_dict, difficulty)
                 time.sleep(1)
-                Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, True, history_coords,bonus1)
+                Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, True, history_coords, bonus1,first_turn)
             whoisplaying += 1
             whoisplaying = whoisplaying % player_num
         max_idx = Sum.index(max(Sum))
