@@ -7,7 +7,7 @@ def set_player_num():
         try:
             player_num = input('Δώστε αριθμό παικτών: ')
             player_num = int(player_num)
-            if player_num == 0:
+            if player_num <= 0:
                 print('Πρέπει να συμμετέχει τουλάχιστον ένας παίκτης. Ξαναδοκιμάστε. ')
                 pass
             else:
