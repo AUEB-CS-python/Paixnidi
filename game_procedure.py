@@ -71,7 +71,7 @@ def vathmoi(cards, sum, name, whoisplaying, starting_dict, row, column, total_co
     do_minus1 = False
     isUseful = [False, False, False]
     is3rd=False
-    if not first_turn and sum[whoisplaying - 1] > 0:
+    if not first_turn:
             before = sum[whoisplaying - 1]
     if bonus1:
         # order εννοουνται τα '♥', '♣', '♦', '♠'
