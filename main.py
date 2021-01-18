@@ -62,6 +62,8 @@ def main():
                 x = input()
     name.sort()
 
+    bonus1 = activate_bonus1()
+
     starting_dict, final_dict = get_arrays(difficulty)
     from time import sleep
 
@@ -82,7 +84,7 @@ def main():
         while starting_dict != final_dict:
             print_board(starting_dict, difficulty)
             cards, row, column = card_check(0, name, columns, whoisplaying, starting_dict, final_dict, difficulty)
-            Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, False, [])
+            Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, False, [], bonus1)
             whoisplaying += 1
             whoisplaying = whoisplaying % player_num
 
@@ -103,7 +105,7 @@ def main():
                 cards, row, column = card_check(0, name, columns, whoisplaying, starting_dict, final_dict, difficulty)
                 Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict,
                                                                        row, column, columns, final_dict, difficulty,
-                                                                       cards_left, False, [])
+                                                                       cards_left, False, [], bonus1)
             else:
                 coords, starting_dict, history_coords = play_turn(starting_dict, final_dict, columns)
                 cards = [final_dict[coords[0]], final_dict[coords[1]]]
@@ -112,7 +114,7 @@ def main():
                 print('Ο πίνακας με τις κάρτες που διάλεξε ο υπολογιστής:')
                 print_board(starting_dict, difficulty)
                 time.sleep(1)
-                Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, True, history_coords)
+                Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, True, history_coords, bonus1)
             whoisplaying += 1
             whoisplaying = whoisplaying % player_num
         max_idx = Sum.index(max(Sum))
