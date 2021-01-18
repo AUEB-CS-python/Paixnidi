@@ -1,7 +1,9 @@
+
 from gen_list import *
 from game_procedure import *
 from computer import play_turn
 import time
+
 
 def card_check(card_num, name, column, whoisplaying, starting_dict, final_dict, difficulty):
     cards = []
@@ -11,12 +13,12 @@ def card_check(card_num, name, column, whoisplaying, starting_dict, final_dict, 
         r, c = pick_cards(card_num, column, name, whoisplaying - 1)
         r -= 1
         c -= 1
-        row.append(r)
-        col.append(c)
         card = final_dict[(r, c)]
         if card == starting_dict[(r, c)]:
             print('Η κάρτα αυτή είναι ήδη ανοιχτή.')
         else:
+            row.append(r)
+            col.append(c)
             card_num += 1
             starting_dict[(r, c)] = card
             cards.append(card)
