@@ -160,7 +160,11 @@ def vathmoi(cards, sum, name, whoisplaying, starting_dict, row, column, total_co
                 else:
                     earntpoints1 = False
                 if bonus1:
-                    third_card_order = cards[0][1]
+                    third_card_order = final_dict[(r, c)][1]
+                    if third_card_symbol=='K':
+                        true_value=whoisplaying-1
+                    else:
+                        true_value=whoisplaying
                     if third_card_symbol == 'A':
                         p3 = 1
                     elif third_card_symbol in [str(i) for i in range(2, 11)]:
@@ -170,15 +174,15 @@ def vathmoi(cards, sum, name, whoisplaying, starting_dict, row, column, total_co
                     if third_card_order == next_order:
                         isUseful[2] = True
                         if earntpoints2:           # αν True τότε ισχύει ότι next_order==current_order
-                            sum[whoisplaying-1] += p3  # άρα απλά προστίθεται και η αξία της τρίτης κάρτας
+                            sum[true_value-1] += p3  # άρα απλά προστίθεται και η αξία της τρίτης κάρτας
                         else:
-                            sum[whoisplaying-1] += p2+p3
+                            sum[true_value-1] += p2+p3
                             isUseful[1] = True
                             earntpoints2 = True
                     elif third_card_order == current_order:
                         isUseful[2] = True
                         isUseful[0] = True
-                        sum[whoisplaying-1] += p1+p3
+                        sum[true_value-1] += p1+p3
                         earntpoints2 = True
     else:
         earntpoints1 = False

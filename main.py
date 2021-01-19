@@ -100,6 +100,7 @@ def main():
         name.append('Υπολογιστής')
         player_num += 1
 
+        first_turn = True
         whoisplaying = 1
         Sum = [0, 0]
         cards_left = 4*columns
@@ -121,9 +122,23 @@ def main():
                 time.sleep(1)
                 Sum, whoisplaying, starting_dict, cards_left = vathmoi(cards, Sum, name, whoisplaying, starting_dict, row, column, columns, final_dict, difficulty, cards_left, True, history_coords, bonus1,first_turn)
             whoisplaying += 1
-            whoisplaying = whoisplaying % player_num
-        max_idx = Sum.index(max(Sum))
-        print(f'Νικητής είναι ο {name[max_idx]} με {Sum[max_idx]} πόντους!')
+            if whoisplaying > player_num:
+                whoisplaying = whoisplaying - player_num
+                first_turn = False
+        #max_idx = Sum.index(max(Sum))
+        max=max(Sum)
+        list=[]
+        for i in range(len(Sum)):
+            if Sum[i]==max:
+                list.append(i)
+        if len(list)==1:
+            print(f'Νικητής είναι ο {name[max_idx]} με {Sum[max_idx]} πόντους!!!')
+        else:
+            print('Ισοπαλία! Νικητές είναι οι ', end="")
+            for i in range(len(list)):
+                print(name[list[i]]+' ', end='')
+            print(name)
+
 
 
 if __name__ == '__main__':
